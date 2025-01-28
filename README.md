@@ -1,0 +1,2 @@
+# hugo
+Custom Hugo code

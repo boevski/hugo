@@ -1,0 +1,55 @@
+{{- $linkParts := .Get 0 | urls.Parse -}}
+{{- $elinkText := .Get 1 -}}
+
+{{- $eid := $linkParts.Path -}}
+{{- $anchorId := $linkParts.Fragment -}}
+{{- $hashedAnchorId := "" -}}
+{{- if $anchorId -}}
+   {{- $hashedAnchorId = print "#" $anchorId -}}
+{{- end -}}
+{{- $scPage := .Page -}}
+
+{{- $.Scratch.Set "counter" 0 -}}
+{{- $.Scratch.Set "duplicatedIDFilenames" (slice) -}}
+
+{{- if and (eq $eid "") $hashedAnchorId -}}
+   {{- $opts := "" -}}
+   {{- $allHeadings := .Page.Fragments.HeadingsMap -}}
+   {{- $targetHeading := (index $allHeadings $anchorId) -}}
+   {{- $opts = dict "path" $hashedAnchorId -}}
+   {{- if $elinkText -}}
+      {{- printf "[%s](%s)" $elinkText (relref . $hashedAnchorId) | .Page.RenderString -}}
+   {{- else -}}
+      {{- printf "[%s](%s)" $targetHeading.Title (relref . $hashedAnchorId) | .Page.RenderString -}}
+   {{- end -}}
+{{- end -}}
+
+{{- range .Site.Pages -}}
+   {{- if eq .Params.eid $eid -}}
+      {{- $opts := "" -}}
+      {{- if $hashedAnchorId -}}
+         {{- $allHeadings := .Page.Fragments.HeadingsMap -}}
+         {{- $targetHeading := (index $allHeadings $anchorId) -}}
+         {{- $opts = dict "path" (print .Page.File.Path $hashedAnchorId) -}}
+         {{- if $elinkText -}}
+            {{- printf "[%s](%s)" $elinkText (relref . $opts) | .Page.RenderString -}}
+         {{- else -}}
+            {{- printf "[%s](%s)" $targetHeading.Title (relref . $opts) | .Page.RenderString -}}
+         {{- end -}}
+      {{- else -}}
+         {{- $opts = dict "path" .Page.File.Path -}}
+         {{- if $elinkText -}}
+            {{- printf "[%s](%s)" $elinkText (relref . $opts) | .Page.RenderString -}}
+         {{- else -}}
+            {{- printf "[%s](%s)" .LinkTitle (relref . $opts) | .Page.RenderString -}}
+         {{- end -}}
+      {{- end -}}
+      {{- $.Scratch.Set "counter" (add ($.Scratch.Get "counter") 1) -}}
+      {{- $.Scratch.Set "latestLang" .Language.Lang -}}
+      {{- $.Scratch.Add "duplicatedIDFilenames" (slice .File.Filename) -}}
+   {{- end -}}
+{{- end -}}
+
+{{- if gt ($.Scratch.Get "counter") 1 -}}
+   {{- warnf "Duplicated elink: %q in Language: %q and files: %q" $eid ($.Scratch.Get "latestLang") ($.Scratch.Get "duplicatedIDFilenames") -}}
+{{- end -}}

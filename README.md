@@ -82,8 +82,9 @@ One exception are links to heading IDs. Relying on auto-generated IDs will break
 ## Foo Bar { id=resilient-id }
 ```
 
-
 ### Foolproof-ing
+
+The reason the code relies on a new parameter (`eid`) instead of on an existing one like `.Page.File.UniqueId` is to make linking easy and intuitive. As long as you create logical EIDs, anyone would be able to quickly identify where the link ponts at.
 
 The code is set to emit a console warning if it finds a duplicated EID, but it will not fail the build. Instead, it will create adjacent links for all EIDs it finds.
 

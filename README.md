@@ -1,13 +1,22 @@
 # hugo
 Collection of Hugo shortcodes, templates, and render hooks.
 
+Contents:
+
+* [Installation](#installation)
+* [elink.html](#elinkhtml)
+  * [Usage](#usage)
+  * [Examples](#examples)
+  * [Multilingual Considerations](#multilingual-considerations)
+  * [Foolproof-ing](#foolproof-ing)
+
 ## Installation
 
 Copy the file that you want into your Hugo project, preserving the directory structure of this repo. 
 
 ## elink.html
 
-This shortcode allows you to link pages using a uniqe ID. This way, you get a working link wherever and whenever you move the file containing the link.
+This shortcode allows you to link pages using a unique ID. This way, you get a working link wherever and whenever you move the file containing the link.
 
 In addition, the link automatically pulls the name of the target resource:
 
@@ -48,20 +57,31 @@ To link the "Foo Bar" heading on the same page:
 To link the "Foo Bar" heading on the "Overview" page:
 
 ```
-{{< elink "overview#foo-bar" >}} -> [Foo Bar](#foo-bar)
+{{< elink "overview#foo-bar" >}} -> [Foo Bar](overview.md#foo-bar)
 ```
 
 To link the "Overview" page:
 
 ```
-{{< elink "overview" >}} -> [Overview](#foo-bar)
+{{< elink "overview" >}} -> [Overview](overview.md)
 ```
 
 To link the "Foo Bar" heading on the "Overview" page with a custom link text:
 
 ```
-{{< elink "overview#foo-bar" "click here" >}} -> [click here](overview#foo-bar)
+{{< elink "overview#foo-bar" "click here" >}} -> [click here](overview.md#foo-bar)
 ```
+
+### Multilingual Considerations
+
+EID linking works great in multilingual sites. You don't need to change your links as long as you keep the EID the same between translated pages.
+
+One exception are links to heading IDs. Relying on auto-generated IDs will break the links. In this case, I recommend enforcing the policy to tag all linked headings with a manual ID as shown below and using it consistently across translations.
+
+```
+## Foo Bar { id=resilient-id }
+```
+
 
 ### Foolproof-ing
 

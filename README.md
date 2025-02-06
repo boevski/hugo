@@ -16,7 +16,7 @@ Copy the file that you want into your Hugo project, preserving the directory str
 
 ## elink.html
 
-This shortcode allows you to link pages using a unique ID. This way, you get a working link wherever and whenever you move the file containing the link.
+This shortcode allows you to link pages using a unique ID. This way, you get a working link wherever and whenever you move the linking file or the target file.
 
 In addition, the link automatically pulls the name of the target resource:
 

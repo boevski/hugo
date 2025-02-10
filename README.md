@@ -1,4 +1,3 @@
-# hugo
 Collection of Hugo shortcodes, templates, and render hooks.
 
 Contents:
@@ -9,10 +8,12 @@ Contents:
   * [Examples](#examples)
   * [Multilingual Considerations](#multilingual-considerations)
   * [Foolproof-ing](#foolproof-ing)
+* [Working Links on Docsy `_print` Pages](#working-links-on-docsy-_print-pages)
+  * [Usage](#usage-1)
 
 ## Installation
 
-Copy the file that you want into your Hugo project, preserving the directory structure of this repo. 
+Copy the file(s) that you want into your Hugo project, preserving the directory structure of this repo.
 
 ## elink.html
 
@@ -89,3 +90,37 @@ The reason the code relies on a new parameter (`eid`) instead of on an existing 
 The code is set to emit a console warning if it finds a duplicated EID, but it will not fail the build. Instead, it will create adjacent links to all files with the specified EID.
 
 You can make the build fail if you substitute `errorf` for `warnf` in the final line.
+
+## Working Links on Docsy `_print` Pages
+
+The original [Docsy](https://github.com/google/docsy) `_print` page has a drawback—it keeps links unchanged, meaning they target articles outside of that page. As a result, PDFs generated from it have broken/unfunctional links.
+
+This collection of redefines fixes that. It depends on the Docsy theme for Hugo.
+
+Pick the following files from this repo and install them in your Docsy project as described in [Installation](#installation).
+
+* `layouts/_default/_markup/render-heading.print.html`
+  
+  Print-specific render hook for headings.
+  
+  It modifies the original hook to append the unique File ID of each file (`href="#foobar875935964fc6d1e64cb4d3451cdf0779"`) to prevent repeating heading IDs within the `_print` page in case multiple files contain the same ID.
+  
+* `layouts/_default/_markup/render-link.print.html`
+  
+  Print-specific render hook for links.
+
+  It uses the `IsAbs` method to recognize external links and leave them unchanged. It replaces link targets that only contain a file path (like `docs/overview.html`) with the file's unique File ID (`href="#28cedb2567cb30e9484048cb10eaac4a"`), which matches the H1 IDs normally created by Docsy (with a twist; see `content.html` below).
+  
+  It appends link targets that only contain an anchor (`href="#foobar"`) with the unique File ID of the file they are contained in (`href="foobar#28cedb2567cb30e9484048cb10eaac4a"`).
+
+* `layouts/partials/print/content`
+  
+  Slight modification of the original code.It drops the `pg-` prefix from H1 IDs on line 9 for shorter IDs (instead of id="#pg-875935964fc6d1e64cb4d3451cdf0779" you'll get id="#875935964fc6d1e64cb4d3451cdf0779"). The render hooks rely on this change.
+
+* `layouts/partials/print/toc-li.html`
+
+  Slight modification of the original code.It drops the `pg-` prefix from H1 IDs on line 9 for shorter IDs (instead of id="#pg-875935964fc6d1e64cb4d3451cdf0779" you'll get id="#875935964fc6d1e64cb4d3451cdf0779"). The render hooks rely on this change.
+
+### Usage
+
+Copy the files and then restart your Dev server or rebuild. The Dev server can't pick up the changes live.

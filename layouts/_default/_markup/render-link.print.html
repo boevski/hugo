@@ -1,0 +1,33 @@
+{{- $u := urls.Parse .Destination -}}
+{{ $linkPageContext := . }}
+
+{{- if $u.IsAbs -}}
+  <a href="{{ .Destination | safeURL }}"
+    {{- with .Title }} title="{{ . }}"{{ end -}}
+    rel="external"
+  >
+    {{- with .Text }}{{ . }}{{ end -}}
+  </a>
+{{- else if not $u.Path -}}
+  <a href="{{ (print .Destination .Page.File.UniqueID ) | safeURL }}"
+    {{- with .Title }} title="{{ . }}" {{ end -}}
+  >
+    {{- with .Text }}{{ . }}{{ end -}}
+  </a>
+{{- else -}}
+  {{- with .Page.GetPage $u.Path }}
+    {{- with $u.Fragment -}}
+      <a href="{{ (print "#" . .File.UniqueID) | safeURL }}"
+      {{- with $linkPageContext.Title }} title="{{ . }}"{{ end -}}
+      >
+      {{- with $linkPageContext.Text }}{{ . }}{{ end -}}
+      </a>
+    {{- else -}}
+      <a href="{{ (print "#" .File.UniqueID) | safeURL }}"
+      {{- with $linkPageContext.Title }} title="{{ . }}"{{ end -}}
+      >
+      {{- with $linkPageContext.Text }}{{ . }}{{ end -}}
+      </a>
+    {{- end -}}
+  {{ end -}}
+{{ end -}}

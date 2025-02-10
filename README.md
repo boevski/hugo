@@ -115,11 +115,11 @@ Pick the following files from this repo and install them in your Docsy project a
 
 * `layouts/partials/print/content`
   
-  Slight modification of the original code.It drops the `pg-` prefix from H1 IDs on line 9 for shorter IDs (instead of id="#pg-875935964fc6d1e64cb4d3451cdf0779" you'll get id="#875935964fc6d1e64cb4d3451cdf0779"). The render hooks rely on this change.
+  Slight modification of the original code. It drops the `pg-` prefix from H1 IDs on line 9 for shorter IDs (instead of id="#pg-875935964fc6d1e64cb4d3451cdf0779" you'll get id="#875935964fc6d1e64cb4d3451cdf0779"). The render hooks rely on this change.
 
 * `layouts/partials/print/toc-li.html`
 
-  Slight modification of the original code.It drops the `pg-` prefix from H1 IDs on line 9 for shorter IDs (instead of id="#pg-875935964fc6d1e64cb4d3451cdf0779" you'll get id="#875935964fc6d1e64cb4d3451cdf0779"). The render hooks rely on this change.
+  Slight modification of the original code. It drops the `pg-` prefix from H1 IDs on line 9 for shorter IDs (instead of id="#pg-875935964fc6d1e64cb4d3451cdf0779" you'll get id="#875935964fc6d1e64cb4d3451cdf0779"). The render hooks rely on this change.
 
 ### Usage
 

@@ -17,16 +17,18 @@ Copy the file(s) that you want into your Hugo project, preserving the directory 
 
 ## elink.html
 
-This shortcode allows you to link pages using a unique ID. This way, you get a working link wherever and whenever you move the linking file or the target file.
+This shortcode allows you to link pages using a unique ID. It looks for the location of the target page and builds up the page path for you. This way, you get a working link wherever and whenever you move the linking file or the target file.
 
-In addition, the link automatically pulls the name of the target resource:
+In addition, the shortcode can automatically pull the name of the target resource:
 
 * If the target is a page, it uses the page Title as the link text.
 * If the target is a heading (on the same or another page), it uses the heading text as the link text.
 
+If you don't want the automatic link text, you can specify your own.
+
 ### Usage
 
-First, set a unique ID in your page metadata, under `params`. Create `params` if you don't have it:
+First, set a unique ID in the metadata of the page you are targeting, under `params`. Create `params` if you don't have it:
 
 ```
 ---
@@ -37,7 +39,7 @@ params:
 ---
 ```
 
-If you have multiple pages with the same name under different sections, you'll need to make the IDs unique. I recommend prefixing them with the section name: `car-washing-an-elephant-overview`, `feeding-your-elephant-overview`, and so on. Spaces are allowed.
+I recommend using a lowercased-and-dashed version of the Title. This way, anyone would be able to guess where the link points at. If you have multiple pages with the same name under different sections (like **Overview** or **Introduction**), you'll need to make the IDs unique. One way is prefixing them with the section name: `car-washing-an-elephant-overview`, `feeding-your-elephant-overview`, and so on. Spaces are allowed.
 
 Then use the following synatax to create links:
 
@@ -58,7 +60,7 @@ To link the "Foo Bar" heading on the same page:
 To link the "Foo Bar" heading on the "Overview" page:
 
 ```
-{{< elink "overview#foo-bar" >}} -> [Foo Bar](overview.md#foo-bar)
+{{< elink "overview#foo-bar" >}} -> [Foo Bar](overview.md#foo-bar) (or `../../overview.md#foo-bar`, or `/car-washing-an-elephant/overview.md#foo-bar`, or `/car-washing-an-elephant/on-a-weekday/overview.md#foo-bar`, depending on where the file is located)
 ```
 
 To link the "Overview" page:
